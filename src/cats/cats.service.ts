@@ -1,6 +1,11 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
-import { CreateCatDto } from './create-cat.dto';
-import { UpdateCatDto } from './update-cat.dto';
+import { CreateCatDto } from './dtos/create-cat.dto';
+import { UpdateCatDto } from './dtos/update-cat.dto';
+import { UpdateCatAgeDto } from './dtos/update-cat-age.dto';
+import { UpdateCatBreedAndNameDto } from './dtos/update-cat-breed-and-name.dto';
+import { UpdateCatExceptAgeDto } from './dtos/update-cat-except-age.dto';
+import { ExtraCatInfoDto } from './dtos/extra-cat-info.dto';
+import { CreateCatWithExtraInfoDto } from './dtos/create-cat-with-extra-info.dto';
 
 export interface Cat {
   id: number;
@@ -27,10 +32,16 @@ export class CatsService {
     return this.cats[this.cats.length - 1];
   }
 
-  updateCat(updateCatDto: UpdateCatDto) {
-    const foundCatIndex = this.cats.findIndex(
-      (cat) => cat.id === updateCatDto.id,
-    );
+  extraInfo(extraCatInfoDto: ExtraCatInfoDto) {
+    return extraCatInfoDto;
+  }
+
+  createCatWithExtraInfo(createCatWithExtraInfoDto: CreateCatWithExtraInfoDto) {
+    return createCatWithExtraInfoDto;
+  }
+
+  updateCat(id: number, updateCatDto: UpdateCatDto) {
+    const foundCatIndex = this.cats.findIndex((cat) => cat.id === id);
     if (foundCatIndex === -1) {
       throw new BadRequestException('Cat not found');
     }
@@ -41,15 +52,42 @@ export class CatsService {
     return this.cats[foundCatIndex];
   }
 
-  updateCatAge(updateCatAgeDto) {
-    return;
+  updateCatAge(id: number, updateCatAgeDto: UpdateCatAgeDto) {
+    const foundCatIndex = this.cats.findIndex((cat) => cat.id === id);
+    if (foundCatIndex === -1) {
+      throw new BadRequestException('Cat not found');
+    }
+    this.cats[foundCatIndex] = {
+      ...this.cats[foundCatIndex],
+      ...updateCatAgeDto,
+    };
+    return this.cats[foundCatIndex];
   }
 
-  updateCatBreedAndName(updateCatBreedAndNameDto) {
-    return;
+  updateCatBreedAndName(
+    id: number,
+    updateCatBreedAndNameDto: UpdateCatBreedAndNameDto,
+  ) {
+    const foundCatIndex = this.cats.findIndex((cat) => cat.id === id);
+    if (foundCatIndex === -1) {
+      throw new BadRequestException('Cat not found');
+    }
+    this.cats[foundCatIndex] = {
+      ...this.cats[foundCatIndex],
+      ...updateCatBreedAndNameDto,
+    };
+    return this.cats[foundCatIndex];
   }
 
-  updateCatExceptAge() {
-    return;
+  updateCatExceptAge(id: number, updateCatExceptAgeDto: UpdateCatExceptAgeDto) {
+    const foundCatIndex = this.cats.findIndex((cat) => cat.id === id);
+    if (foundCatIndex === -1) {
+      throw new BadRequestException('Cat not found');
+    }
+    this.cats[foundCatIndex] = {
+      ...this.cats[foundCatIndex],
+      ...updateCatExceptAgeDto,
+    };
+    return this.cats[foundCatIndex];
   }
 }

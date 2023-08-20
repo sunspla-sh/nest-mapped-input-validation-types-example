@@ -1,7 +1,7 @@
 import { Length, IsInt, Min, Max } from 'class-validator';
 
 export class CreateCatDto {
-  @Length(0, 64)
+  @Length(1, 64)
   name: string;
 
   @IsInt()
@@ -9,6 +9,6 @@ export class CreateCatDto {
   @Max(30)
   age: number;
 
-  @Length(0, 64)
+  @Length(1, 64)
   breed: string;
 }
